@@ -1,4 +1,4 @@
-package com.annenbergmedianewsapp
+package com.annenbergmedia.news
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -1,5 +1,6 @@
-package com.annenbergmedianewsapp
+package com.annenbergmedia.news
 
+import android.os.Bundle
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -14,8 +15,15 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "AnnenbergMediaNewsApp"
 
   /**
+   * Ensures gesture-based navigation works properly.
+   */
+  override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(null) // Fix for React Native gesture navigation
+  }
+
+  /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   * which allows you to enable New Architecture with a single boolean flag [fabricEnabled]
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)

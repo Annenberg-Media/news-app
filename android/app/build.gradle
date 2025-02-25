@@ -77,9 +77,10 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.annenbergmedianewsapp"
+
+    namespace "com.annenbergmedia.news"
     defaultConfig {
-        applicationId "com.annenbergmedianewsapp"
+        applicationId "com.annenbergmedia.news"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
