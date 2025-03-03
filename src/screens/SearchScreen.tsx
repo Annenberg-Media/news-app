@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PopularSearch from '../components/PopularSearch';
 import COLORS from '../constants/colors';
 import SearchBar from '../components/SearchBar';
 
@@ -13,7 +14,8 @@ const SearchScreen = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <SearchBar onSearch={handleSearch} />
-            </View>
+            </View>                 
+            <PopularSearch searchStrings={["hello", "annenburg", "USC"]} />
         </SafeAreaView>
     );
 };
@@ -24,8 +26,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
     },
     content: {
-        flex: 1,
-        padding: 20,
+        padding: 0,
     },
 });
 
