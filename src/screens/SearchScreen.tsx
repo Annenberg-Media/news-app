@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PopularSearch from '../components/PopularSearch';
 import COLORS from '../constants/colors';
 import SearchBar from '../components/SearchBar';
+import { HistoryItem } from '../components/HistoryItem';
 
 const SearchScreen = () => {
     const handleSearch = (query: string) => {
@@ -14,8 +15,9 @@ const SearchScreen = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <SearchBar onSearch={handleSearch} />
-            </View>                 
-            <PopularSearch searchStrings={["hello", "annenburg", "USC"]} />
+                <HistoryItem text="history item" />
+                <PopularSearch searchStrings={["hello", "annenburg", "USC"]} />
+            </View>
         </SafeAreaView>
     );
 };
@@ -26,7 +28,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
     },
     content: {
-        padding: 0,
+        flex: 1,
+        paddingHorizontal: 15,
     },
 });
 
