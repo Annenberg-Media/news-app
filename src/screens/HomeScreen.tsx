@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState }  from 'react';
 import 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {StyleSheet, FlatList, Text, View, Dimensions} from 'react-native';
@@ -8,8 +8,10 @@ import NewsCard from "../components/NewsCard.tsx";
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 import TrendingCard from '../components/TrendingCard';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { fetchNews } from '../api/NewsService.ts';
+import { useNavigation } from '@react-navigation/native';
 
-const articles = [
+const dummyArticles = [
     {
         id: '1',
         headline: 'A program’s lifeline: USC football high school recruiting tracker',
@@ -100,7 +102,7 @@ const HomeScreen = () => {
                 <View style = {styles.carouselContainer}>
                     <FlatList
                         ref={flatListRef}
-                        data={articles}
+                        data={dummyArticles}
                         horizontal
                         decelerationRate="fast"
                         pagingEnabled
@@ -124,7 +126,7 @@ const HomeScreen = () => {
                 </View>  
                 <View style={styles.dotsContainer}>
                     <AnimatedDotsCarousel
-                        length={articles.length}
+                        length={dummyArticles.length}
                         currentIndex={activeIndex}
                         maxIndicators={1}
                         interpolateOpacityAndColor={false}
