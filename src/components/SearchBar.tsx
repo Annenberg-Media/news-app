@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, TextInput, StyleSheet, Image } from 'react-native';
+import SearchIcon from '../assets/icons/search.svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -19,7 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSear
 
   return (
     <View style={styles.container}>
-      <Icon name="magnify" size={20} color="#888" style={styles.icon} />
+      <SearchIcon width={20} height={20} style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder={placeholder}
