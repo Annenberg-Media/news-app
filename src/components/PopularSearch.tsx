@@ -49,20 +49,20 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     content: {
-        flexDirection: "row",  // Makes buttons appear inline
-        flexWrap: "wrap",  // Allows wrapping to the next line if needed
-        gap: 10,  // Adds spacing between buttons
+        flexDirection: "row",  
+        flexWrap: "wrap",  
+        gap: 10,  
     },
     searchButton: {
-        backgroundColor: COLORS.white,  // Button background is white
-        borderWidth: 2,  // Border thickness
-        borderColor: COLORS.primary,  // Border color
+        backgroundColor: COLORS.white,  
+        borderWidth: 2,  
+        borderColor: COLORS.primary,  
         paddingVertical: 10,
         paddingHorizontal: 15,
-        borderRadius: 20,  // Rounded corners
+        borderRadius: 20,  
     },
     buttonText: {
-        color: COLORS.black,  // Text color remains black
+        color: COLORS.black, 
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
