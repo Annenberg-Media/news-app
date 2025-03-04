@@ -7,8 +7,15 @@ import YoutubeVideoCard from '../components/YoutubeVideoCard';
 const VideoScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.content} />
-            <YoutubeVideoCard/>
+            
+            
+            <View style={styles.content}>
+                <YoutubeVideoCard
+                    videoId = "OskSjG62wjo" 
+                />
+            </View>
+            
+            
         </SafeAreaView>
     );
 };
