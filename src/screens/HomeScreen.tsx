@@ -43,6 +43,41 @@ const articles = [
 const { width } = Dimensions.get('window');
 
 const HomeScreen = () => {
+    interface Article {
+        id: string;
+        headline: string;
+        credits: string;
+        readTime: string;
+        imageUrl: string;
+        canonicalUrl: string;
+    }
+
+    const navigation = useNavigation<any>();
+    const [articles, setArticles] = useState<Article[]>([]);
+
+
+    useEffect(() => {
+        const loadNews = async () => {
+            try {
+                const newsData = await fetchNews({ size: 30 });
+                const formattedArticles: Article[] = newsData.map((item: any) => ({
+                    id: item._id,
+                    headline: item.headlines?.basic || 'No headline available',
+                    credits: item.credits || 'Unknown Author',
+                    readTime: '5',
+                    imageUrl: item.promo_items?.basic?.additional_properties?.resizeUrl || '',
+                    canonicalUrl: item.canonical_url || '',
+                }));
+                setArticles(formattedArticles);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        };
+
+        loadNews();
+    }, []);
+
+
     const [activeIndex, setIndex] = React.useState(0);
     const flatListRef = React.useRef(null);
 
@@ -58,7 +93,7 @@ const HomeScreen = () => {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
+            <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
                 <Text style={styles.h1} accessibilityRole="header">
                     Trending
                 </Text>  
@@ -118,19 +153,20 @@ const HomeScreen = () => {
                         ]}
                     />
                 </View>
-                <FlatList 
-                    data={articles}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <NewsCard
-                            headline={item.headline}
-                            credits={item.credits}
-                            readTime={item.readTime}
-                            imageUrl={item.imageUrl}
-                            onPress={() => console.log('Article clicked')}
-                        />
-                    )}
-                />
+                <FlatList
+                data={articles}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }: { item: Article }) => (
+                    <NewsCard
+                        id={item.id}
+                        headline={item.headline}
+                        credits={item.credits}
+                        readTime={item.readTime}
+                        imageUrl={item.imageUrl}
+                        onPress={() =>  navigation.navigate('Reader', { url: item.canonicalUrl })}
+                    />
+                )}
+            />
             </SafeAreaView>
         </GestureHandlerRootView>
     );

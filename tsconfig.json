@@ -6,5 +6,17 @@
       "jsx": "react"
   },
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "types": ["react-native-svg"]
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@screens/*": ["src/screens/*"],
+      "@navigation/*": ["src/navigation/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "src/declarations.d.ts"],
+  "types": ["react-native", "react-native-svg"]
 }
