@@ -9,11 +9,12 @@ import KEYS from '../constants/keys.ts';
 interface NewsCardProps {
   id: string;
   headline: string;
-  credits: string;
-  readTime: string;
+  credits?: string;
+  readTime?: string;
   imageUrl: string;
   onPress?: () => void; // Card press
   onBookmarkPress?: () => void; // Bookmark press
+  showBookmark?: boolean;
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({
@@ -23,6 +24,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
   readTime,
   imageUrl,
   onPress,
+  showBookmark = true,
 }) => {
   const [saved, setSaved] = useState(false);
 
@@ -37,8 +39,9 @@ const NewsCard: React.FC<NewsCardProps> = ({
 
   // Toggle Bookmark
   const handleBookmarkPress = async () => {
-    const article = {id, headline, credits, readTime, imageUrl};
+    if (!showBookmark) return; // If showBookmark is false, do not execute any operations
 
+    const article = {id, headline, credits, readTime, imageUrl};
     if (saved) {
       await removeItem(KEYS.SAVED_NEWS_KEY, id);
       console.log('Removed from saved');
@@ -55,8 +58,8 @@ const NewsCard: React.FC<NewsCardProps> = ({
         <Text style={styles.headline} numberOfLines={2}>
           {headline}
         </Text>
-        <Text style={styles.credits}>By {credits}</Text>
-        <Text style={styles.readTime}>{readTime} min read</Text>
+        {credits && <Text style={styles.credits}>By {credits}</Text>}
+        {readTime && <Text style={styles.readTime}>{readTime} min read</Text>}
       </View>
 
       <View style={styles.imageContainer}>
@@ -64,9 +67,14 @@ const NewsCard: React.FC<NewsCardProps> = ({
           source={{uri: URLS.ANN_BASE_URL + imageUrl}}
           style={styles.image}
         />
-        <Pressable style={styles.bookmarkWrapper} onPress={handleBookmarkPress}>
-          <BookmarkIcon width={24} height={24} color={COLORS.primary} />
-        </Pressable>
+
+        {showBookmark && (
+          <Pressable
+            style={styles.bookmarkWrapper}
+            onPress={handleBookmarkPress}>
+            <BookmarkIcon width={24} height={24} color={COLORS.primary} />
+          </Pressable>
+        )}
       </View>
     </Pressable>
   );

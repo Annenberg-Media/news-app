@@ -4,54 +4,57 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import COLORS from '../constants/colors';
 import QuillPenIcon from '../assets/icons/quill-pen-line.svg';
 import NewsCard from '../components/NewsCard';
-
-// Mock data for Editor's Picks (Replace with API call)
-const mockEditorsPicks = [
-  {
-    id: '1',
-    headline: "The Mavericks' other 1-2 punch",
-    credits: 'John Doe',
-    readTime: '5',
-    imageUrl: 'https://picsum.photos/112/112?random=1',
-  },
-  {
-    id: '2',
-    headline: 'Trojan transfers: live USC football transfer portal tracker',
-    credits: 'Jane Smith',
-    readTime: '3',
-    imageUrl: 'https://picsum.photos/112/112?random=2',
-  },
-  {
-    id: '3',
-    headline:
-      '‘Art Konbini’ by Giant Robot and JANM makes meeting creatives and supporting their work ‘convenient’',
-    credits: 'Alex Brown',
-    readTime: '4',
-    imageUrl: 'https://picsum.photos/112/112?random=3',
-  },
-  {
-    id: '4',
-    headline: 'Ms. Atlas',
-    credits: 'Alice Johnson',
-    readTime: '2',
-    imageUrl: 'https://picsum.photos/112/112?random=4',
-  },
-  {
-    id: '5',
-    headline:
-      'SPARKS: Clark’s late-game heroics seal the deal for Indiana Fever’s first win',
-    credits: 'Michael Lee',
-    readTime: '6',
-    imageUrl: 'https://picsum.photos/112/112?random=5',
-  },
-];
+import {fetchNews} from '../api/NewsService';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
 
 const SearchScreen = () => {
-  const [editorsPicks, setEditorsPicks] = useState(mockEditorsPicks); // Replace with API call
+  interface Article {
+    id: string;
+    headline: string;
+    credits: string;
+    readTime: string;
+    imageUrl: string;
+    canonicalUrl: string;
+  }
+
+  type RootStackParamList = {
+    Reader: {url: string};
+  };
+
+  const [editorsPicks, setEditorsPicks] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    // Fetch data here if using an API
-    // Example: fetchEditorPicks().then(setEditorsPicks);
+    const loadNews = async () => {
+      try {
+        setLoading(true);
+        const response = await fetchNews({size: 5, isEditorsPick: true});
+        //console.log('Fetched News:', response);
+
+        const formattedData: Article[] =
+          response?.map(item => ({
+            id: item._id,
+            headline: item.headlines?.basic || 'No Title',
+            credits: item.credits || '',
+            readTime: item.word_count
+              ? Math.ceil(item.word_count / 200).toString()
+              : '',
+            imageUrl:
+              item.promo_items?.basic?.additional_properties?.resizeUrl || '',
+            canonicalUrl: item.canonical_url || '',
+          })) || [];
+
+        setEditorsPicks(formattedData);
+      } catch (err) {
+        console.error('Error fetching news:', err);
+        setError(err.message || 'Something went wrong');
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadNews();
   }, []);
 
   return (
@@ -68,13 +71,16 @@ const SearchScreen = () => {
           renderItem={({item, index}) => (
             <View style={styles.editorPickItem}>
               <Text style={styles.index}>{index + 1}</Text>
-
               <NewsCard
+                id={item.id}
                 headline={item.headline}
                 credits={''}
                 readTime={''}
                 imageUrl={item.imageUrl}
-                onPress={() => console.log(`Clicked on: ${item.headline}`)}
+                onPress={() =>
+                  navigation.navigate('Reader', {url: item.canonicalUrl})
+                }
+                showBookmark={false}
               />
             </View>
           )}
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   index: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: COLORS.primary,
     marginRight: 10,
