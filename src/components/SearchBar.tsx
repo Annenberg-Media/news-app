@@ -13,9 +13,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSear
 
   const handleChangeText = (text: string) => {
     setSearchText(text);
-    if (onSearch) {
-      onSearch(text);
-    }
+    // if (onSearch) {
+    //   onSearch(text);
+    // }
   };
 
   return (
@@ -27,6 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSear
         placeholderTextColor="#888"
         value={searchText}
         onChangeText={handleChangeText}
+        onSubmitEditing={() => onSearch(searchText)}
       />
     </View>
   );

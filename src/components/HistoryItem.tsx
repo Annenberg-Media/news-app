@@ -1,23 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface SearchItemProps {
+  id: string;
   text: string;
+  handleRemove: (id: string) => void;
 }
 
-const HistoryItem: React.FC<SearchItemProps> = ({ text }) => {  // Add text prop here
-  const handleRemove = () => {
-    console.log("Remove item");
-  };
-
-  function handleSearch(_event: GestureResponderEvent): void {
-    console.log("Search for:", text);
-  }
-
+const HistoryItem: React.FC<SearchItemProps> = ({ id, text, handleRemove }) => {
   return (
     <View style={styles.container}>
-        <Text style={styles.itemText} onPress={handleSearch}>{text}</Text>
-        <TouchableOpacity onPress={handleRemove}>
+        <Text style={styles.itemText}>{text}</Text>
+        <TouchableOpacity onPress={() => handleRemove(id)}>
           <Text style={styles.removeButton}>×</Text>
         </TouchableOpacity>
     </View>
@@ -43,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { HistoryItem };  // Export the component
+export { HistoryItem };
