@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { View, Text, Alert, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Alert, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import YoutubePlayer from "react-native-youtube-iframe";
 import COLORS from '../constants/colors';
 import BookmarkIcon from '../assets/icons/bookmark.svg'; // Ensure correct import
 import TYPOGRAPHY from '../constants/typography';
+import { WebViewNavigation } from 'react-native-webview';
 
 // Define prop types
 interface YoutubeVideoCardProps {
@@ -17,6 +18,14 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 	const playerRef = useRef<any>(null);
 
 	const [playing, setPlaying] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
+
+	const videoWidth = Dimensions.get('window').width - 60;
+	const videoHeight = (Dimensions.get('window').width - 60) * 9 / 16;
+	const handlePlayerReady = () => {
+		setLoading(false);
+	};
+
 
 	return (
 		<View style={styles.container}>
@@ -25,21 +34,69 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 			</View>
 
 			<View style={styles.videoContainer}>
+
+				{/* Show loading overlay until the player is ready */}
+				{loading && (
+					<View
+						style={[
+							styles.loadingOverlay,
+							{
+								height: videoHeight,
+								width: videoWidth,
+								display: loading ? 'flex' : 'none'
+							},
+						]}
+					>
+						<ActivityIndicator size="large" color={COLORS.primary} />
+					</View>
+				)}
+
+				{/* Show YouTube player only when loading is false */}
+
 				<YoutubePlayer
 					ref={playerRef}
-					height={(Dimensions.get('window').width - 60) * 9 / 16}
-					width={Dimensions.get('window').width - 60}
+					height={videoHeight}
+					width={videoWidth}
 					play={playing}
 					videoId={videoId}
-					// onChangeState={onStateChange}
+					onReady={handlePlayerReady}  // Set loading to false when the player is ready
 					webViewStyle={{ aspectRatio: 16 / 9 }}
+					webViewProps={{
+						onShouldStartLoadWithRequest: (request: WebViewNavigation) => {
+							// Detailed logging to understand the URLs
+
+
+							// More comprehensive URL checking
+							const validPatterns = [
+								`https://lonelycpp.github.io/react-native-youtube-iframe`,
+								`https://www.youtube.com/embed/`,
+								`about:blank`
+							];
+
+							const isValid = validPatterns.some(pattern =>
+								request.url.includes(pattern)
+							);
+
+
+							return isValid;
+						}
+					}}
+					onError={(e: string) => {
+						console.error('Detailed YouTube Player Error:', e);
+						// Optionally, add fallback UI or error message
+					}}
 				/>
+
+
 			</View>
 
 			<View style={styles.dateContainer}>
 				<Text style={styles.dateText}>{date}</Text>
 				<View style={styles.bookmarkWrapper}>
-					<BookmarkIcon width={24} height={24} color={COLORS.primary} />
+					<TouchableOpacity>
+						<BookmarkIcon width={24} height={24} color={COLORS.primary} />
+					</TouchableOpacity>
+
 				</View>
 			</View>
 		</View>
@@ -74,7 +131,24 @@ const styles = StyleSheet.create({
 		padding: 10,
 		paddingBottom: 0,
 		marginBottom: 5,
+
+		position: 'relative', // Set to relative to allow absolute positioning of overlay
+	},
+
+	loadingOverlay: {
+		alignItems: 'center',
+		padding: 10,
+		paddingBottom: 0,
+
+		marginBottom: 5,
 		width: "100%",
+		position: 'absolute', // Position it absolutely within the video container
+
+		justifyContent: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+
+
 	},
 	bookmarkWrapper: {
 		paddingLeft: 100
