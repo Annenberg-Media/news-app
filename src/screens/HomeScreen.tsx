@@ -10,6 +10,7 @@ import TrendingCard from '../components/TrendingCard';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { fetchNews } from '../api/NewsService.ts';
 import { useNavigation } from '@react-navigation/native';
+import TYPOGRAPHY from '../constants/typography';
 
 const dummyArticles = [
     {
@@ -96,7 +97,7 @@ const HomeScreen = () => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
-                <Text style={styles.h1} accessibilityRole="header">
+                <Text style={[TYPOGRAPHY.headings.h5, styles.title]} accessibilityRole="header">
                     Trending
                 </Text>  
                 <View style = {styles.carouselContainer}>
@@ -180,10 +181,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingTop:12
     },
-    h1: {
-        fontSize:20,   
-        fontWeight: 'bold',
-        color: COLORS.black,
+    title: {
         paddingHorizontal:16,
     },
     dotsContainer: {

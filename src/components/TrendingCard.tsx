@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
 import COLORS from '../constants/colors';
 import BookmarkIcon from '../assets/icons/bookmark.svg'; // Ensure you have an SVG or replace with an Image
+import TYPOGRAPHY from '../constants/typography';
 
 interface TrendingCardProps {
     headline: string;
@@ -21,11 +22,11 @@ const TrendingCard: React.FC<TrendingCardProps> = ({ headline, credits, readTime
                 <Image source={{ uri: imageUrl }} style={styles.image} />
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.headline} numberOfLines={2}>
+                <Text style={[TYPOGRAPHY.headings.h6, styles.headline]} numberOfLines={2}>
                     {headline}
                 </Text>
-                <Text style={styles.credits}>By {credits}</Text>
-                <Text style={styles.readTime}>{readTime} min read</Text>
+                <Text style={[TYPOGRAPHY.body.xSmall, styles.credits]}>By {credits}</Text>
+                <Text style={[TYPOGRAPHY.body.xSmall, styles.readTime]}>{readTime} min read</Text>
                 <BookmarkIcon width={24} height={24} stroke={COLORS.primary} style={styles.bookmarkIcon} />
             </View>
         </Pressable>
@@ -52,18 +53,13 @@ const styles = StyleSheet.create({
         flex:1,
     },
     headline: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: COLORS.black,
         marginBottom: 4,
     },
     credits: {
-        fontSize: 14,
         color: COLORS.textSecondary,
         marginBottom: 2,
     },
     readTime: {
-        fontSize: 12,
         color: COLORS.textSecondary,
     },
     imageContainer: {
