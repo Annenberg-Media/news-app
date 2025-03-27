@@ -6,9 +6,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 interface SearchBarProps {
   placeholder?: string;
   onSearch: (text: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSearch, onFocus, onBlur }) => {
   const [searchText, setSearchText] = useState("");
 
   const handleChangeText = (text: string) => {
@@ -20,7 +22,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSear
 
   return (
     <View style={styles.container}>
-      <SearchIcon width={20} height={20} style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder={placeholder}
@@ -28,7 +29,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Search...", onSear
         value={searchText}
         onChangeText={handleChangeText}
         onSubmitEditing={() => onSearch(searchText)}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
+      <SearchIcon style={styles.icon} />
     </View>
   );
 };
@@ -43,7 +47,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   icon: {
-    marginRight: 8,
+    width: 24,
+    height: 24,
   },
   input: {
     flex: 1,

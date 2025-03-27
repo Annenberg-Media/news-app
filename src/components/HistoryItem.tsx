@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import TYPOGRAPHY from '../constants/typography';
 
 interface SearchItemProps {
   id: string;
@@ -25,13 +26,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   removeButton: {
-    color: 'red',
-    fontSize: 20,
-    marginLeft: 10,
+    color: 'black',
+    fontSize: 22,
+    marginRight: 10,
   },
   itemText: {
     flex: 1,
-    fontSize: 16,
+    ...TYPOGRAPHY.body.large,
     color: '#333',
     padding: 10,
   },
