@@ -41,6 +41,7 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 						style={[
 							styles.loadingOverlay,
 							{
+								marginTop: 10,
 								height: videoHeight,
 								width: videoWidth,
 								display: loading ? 'flex' : 'none'
