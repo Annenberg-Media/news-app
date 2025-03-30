@@ -16,26 +16,22 @@ interface YoutubeVideoCardProps {
 
 export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoCardProps) {
 	const playerRef = useRef<any>(null);
-
 	const [playing, setPlaying] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
-
 	const videoWidth = Dimensions.get('window').width - 60;
 	const videoHeight = (Dimensions.get('window').width - 60) * 9 / 16;
 	const handlePlayerReady = () => {
 		setLoading(false);
 	};
 
-
 	return (
 		<View style={styles.container}>
+			
 			<View style={styles.titleContainer}>
 				<Text style={styles.title}>{title}</Text>
 			</View>
 
 			<View style={styles.videoContainer}>
-
-
 				{loading && (
 					<View
 						style={[
@@ -52,8 +48,6 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					</View>
 				)}
 
-
-
 				<YoutubePlayer
 					ref={playerRef}
 					height={videoHeight}
@@ -64,21 +58,14 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					webViewStyle={{ aspectRatio: 16 / 9 }}
 					webViewProps={{
 						onShouldStartLoadWithRequest: (request: WebViewNavigation) => {
-
-
-
-
 							const validPatterns = [
 								`https://lonelycpp.github.io/react-native-youtube-iframe`,
 								`https://www.youtube.com/embed/`,
 								`about:blank`
 							];
-
 							const isValid = validPatterns.some(pattern =>
 								request.url.includes(pattern)
 							);
-
-
 							return isValid;
 						}
 					}}
@@ -88,7 +75,6 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					}}
 				/>
 
-
 			</View>
 
 			<View style={styles.dateContainer}>
@@ -97,7 +83,6 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					<TouchableOpacity>
 						<BookmarkIcon width={24} height={24} color={COLORS.primary} />
 					</TouchableOpacity>
-
 				</View>
 			</View>
 		</View>
@@ -132,7 +117,6 @@ const styles = StyleSheet.create({
 		padding: 10,
 		paddingBottom: 0,
 		marginBottom: 5,
-
 		position: 'relative',
 	},
 
@@ -140,16 +124,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 10,
 		paddingBottom: 0,
-
 		marginBottom: 5,
 		width: "100%",
 		position: 'absolute',
-
 		justifyContent: 'center',
 		backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
-
-
 	},
 	bookmarkWrapper: {
 		paddingLeft: 100
