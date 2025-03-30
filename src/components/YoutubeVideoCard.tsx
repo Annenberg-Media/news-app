@@ -2,11 +2,11 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { View, Text, Alert, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import YoutubePlayer from "react-native-youtube-iframe";
 import COLORS from '../constants/colors';
-import BookmarkIcon from '../assets/icons/bookmark.svg'; // Ensure correct import
+import BookmarkIcon from '../assets/icons/bookmark.svg'; 
 import TYPOGRAPHY from '../constants/typography';
 import { WebViewNavigation } from 'react-native-webview';
 
-// Define prop types
+
 interface YoutubeVideoCardProps {
 	title: string;
 	videoId: string;
@@ -35,7 +35,7 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 
 			<View style={styles.videoContainer}>
 
-				{/* Show loading overlay until the player is ready */}
+
 				{loading && (
 					<View
 						style={[
@@ -51,7 +51,7 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					</View>
 				)}
 
-				{/* Show YouTube player only when loading is false */}
+
 
 				<YoutubePlayer
 					ref={playerRef}
@@ -59,14 +59,14 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					width={videoWidth}
 					play={playing}
 					videoId={videoId}
-					onReady={handlePlayerReady}  // Set loading to false when the player is ready
+					onReady={handlePlayerReady}
 					webViewStyle={{ aspectRatio: 16 / 9 }}
 					webViewProps={{
 						onShouldStartLoadWithRequest: (request: WebViewNavigation) => {
-							// Detailed logging to understand the URLs
 
 
-							// More comprehensive URL checking
+
+
 							const validPatterns = [
 								`https://lonelycpp.github.io/react-native-youtube-iframe`,
 								`https://www.youtube.com/embed/`,
@@ -83,7 +83,7 @@ export default function YoutubeVideoCard({ title, videoId, date }: YoutubeVideoC
 					}}
 					onError={(e: string) => {
 						console.error('Detailed YouTube Player Error:', e);
-						// Optionally, add fallback UI or error message
+
 					}}
 				/>
 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 0,
 		marginBottom: 5,
 
-		position: 'relative', // Set to relative to allow absolute positioning of overlay
+		position: 'relative',
 	},
 
 	loadingOverlay: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
 
 		marginBottom: 5,
 		width: "100%",
-		position: 'absolute', // Position it absolutely within the video container
+		position: 'absolute',
 
 		justifyContent: 'center',
 		backgroundColor: 'rgba(0, 0, 0, 0.5)',
