@@ -1,16 +1,15 @@
-import { apiClient } from './apiClient';
+import { apiClient } from './ApiClient.ts';
+import URLS from '../constants/urls.ts';
 
-const NEWS_API_BASE_URL = 'https://news.uscannenbergmedia.workers.dev';
-
-interface FetchNewsParams {
+interface FetchRadioParams {
     size: number;
     from: number;
 }
 
-export const fetchNews = async ({ size, from }: FetchNewsParams) => {
+export const fetchRadios = async ({ size, from }: FetchRadioParams) => {
     const params = new URLSearchParams({
         website: 'uscannenberg',
-        q: 'type:story',
+        q: 'taxonomy.primary_site.path="/listen/from-where-we-are"',
         size: size.toString(),
         sort: 'display_date:desc',
         _sourceInclude:
@@ -18,5 +17,5 @@ export const fetchNews = async ({ size, from }: FetchNewsParams) => {
         from: from.toString(),
     });
 
-    return await apiClient(NEWS_API_BASE_URL, `?${params.toString()}`);
+    return await apiClient(URLS.RADIO_API_BASE_URL, `?${params.toString()}`);
 };

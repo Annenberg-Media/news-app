@@ -1,46 +1,59 @@
-import React from 'react';
-import {StyleSheet, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import NewsCard from "../components/NewsCard.tsx";
-
-const articles = [
-    {
-        id: '1',
-        headline: 'A program’s lifeline: USC football high school recruiting tracker',
-        credits: 'Thomas Johnson',
-        readTime: '11',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwvuTBVw-XxV2DrJKP2MZJQn-aVS-Eu1hORw&s', // Replace with API image
-    },
-    {
-        id: '2',
-        headline: 'A program’s lifeline: USC football high school recruiting tracker',
-        credits: 'Thomas Johnson',
-        readTime: '11',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwvuTBVw-XxV2DrJKP2MZJQn-aVS-Eu1hORw&s', // Replace with API image
-    },
-    {
-        id: '3',
-        headline: 'A program’s lifeline: USC football high school recruiting tracker',
-        credits: 'Thomas Johnson',
-        readTime: '11',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwvuTBVw-XxV2DrJKP2MZJQn-aVS-Eu1hORw&s', // Replace with API image
-    },
-    // More articles...
-];
+import NewsCard from '../components/NewsCard';
+import { fetchNews } from '../api/NewsService.ts';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+    interface Article {
+        id: string;
+        headline: string;
+        credits: string;
+        readTime: string;
+        imageUrl: string;
+        canonicalUrl: string;
+    }
+
+    const navigation = useNavigation<any>();
+    const [articles, setArticles] = useState<Article[]>([]);
+
+
+    useEffect(() => {
+        const loadNews = async () => {
+            try {
+                const newsData = await fetchNews({ size: 30 });
+                const formattedArticles: Article[] = newsData.map((item: any) => ({
+                    id: item._id,
+                    headline: item.headlines?.basic || 'No headline available',
+                    credits: item.credits || 'Unknown Author',
+                    readTime: '5',
+                    imageUrl: item.promo_items?.basic?.additional_properties?.resizeUrl || '',
+                    canonicalUrl: item.canonical_url || '',
+                }));
+                setArticles(formattedArticles);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        };
+
+        loadNews();
+    }, []);
+
+
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
             <FlatList
                 data={articles}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
+                renderItem={({ item }: { item: Article }) => (
                     <NewsCard
+                        id={item.id}
                         headline={item.headline}
                         credits={item.credits}
                         readTime={item.readTime}
                         imageUrl={item.imageUrl}
-                        onPress={() => console.log('Article clicked')}
+                        onPress={() =>  navigation.navigate('Reader', { url: item.canonicalUrl })}
                     />
                 )}
             />
