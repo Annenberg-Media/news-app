@@ -4,7 +4,7 @@ interface FetchOptions {
   body?: string;
 }
 
-export const apiClient = async (baseURL: string, endpoint: string, options: FetchOptions = {}) => {
+export const apiClient = async (baseURL: string, endpoint?: string, options: FetchOptions = {}) => {
     const url = `${baseURL}${endpoint}`;
 
     const defaultHeaders = {
