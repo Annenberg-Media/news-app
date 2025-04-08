@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 14,
     justifyContent: 'space-between',
     minHeight: 80,
   },
