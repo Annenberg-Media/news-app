@@ -60,10 +60,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 15,
         borderRadius: 20,  
+        //put the height as 32 and see how it adjusts accordingly 
     },
     buttonText: {
         color: COLORS.black, 
-        fontSize: 16,
+        fontSize: 16, //use typography, should be Body/bodyMedium
         fontWeight: "bold",
         textAlign: "center",
     },
