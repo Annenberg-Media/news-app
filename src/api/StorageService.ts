@@ -11,6 +11,14 @@ export const saveItem = async (key: string, item: any) => {
     }
 };
 
+export const replaceItem = async (key: string, items: any[]) => {
+    try {
+        await AsyncStorage.setItem(key, JSON.stringify(items));
+    } catch (error) {
+        console.error(`Error replacing items under key "${key}":`, error);
+    }
+};
+
 export const getItems = async (key: string): Promise<any[]> => {
     try {
         const storedItems = await AsyncStorage.getItem(key);
